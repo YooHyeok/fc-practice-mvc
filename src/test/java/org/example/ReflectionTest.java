@@ -3,6 +3,7 @@ package org.example;
 import org.example.annotation.Controller;
 import org.example.annotation.RequestMapping;
 import org.example.annotation.RequestMethod;
+import org.example.annotation.Service;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class ReflectionTest {
         Reflections reflections = new Reflections("org.example"); //패키지 하위의 모든 클래스 대상으로 리플렉션을 사용한다.
         Set<Class<?>> beans = new HashSet<>();
         beans.addAll(reflections.getTypesAnnotatedWith(Controller.class)); // Controller 클래스 어노테이션이 선언된 클래스들을 찾은뒤 HashSet에 모두 저장
-
+        beans.addAll(reflections.getTypesAnnotatedWith(Service.class));
         logger.debug("beans: [{}]", beans);
     }
 }
