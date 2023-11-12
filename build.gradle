@@ -10,6 +10,10 @@ repositories {
 }
 
 dependencies {
+
+    /* 리플렉션 */
+    implementation 'org.reflections:reflections:0.10.2'
+
     /* Embadded Tomcat */
     implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.31'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.31'
