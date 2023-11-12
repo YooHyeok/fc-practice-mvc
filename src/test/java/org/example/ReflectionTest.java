@@ -22,10 +22,6 @@ public class ReflectionTest {
 
     private final Logger logger = LoggerFactory.getLogger(ReflectionTest.class);
 
-
-    /**
-     * Reflectsions 인스턴스의 prefix로 지정한 org.example패키지 하위에 해당하는 클래스들에 대해서
-     */
     @Test
     void controllerScan() {
         Reflections reflections = new Reflections("org.example"); //패키지 하위의 모든 클래스 대상으로 리플렉션을 사용한다.
