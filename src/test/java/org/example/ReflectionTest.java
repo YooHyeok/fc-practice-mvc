@@ -4,15 +4,20 @@ import org.example.annotation.Controller;
 import org.example.annotation.RequestMapping;
 import org.example.annotation.RequestMethod;
 import org.example.annotation.Service;
+import org.example.model.User;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 리플랙션 : 힙 영역에 로드돼 있는 클래스타입의 객체를 통해 필드/ 메소드/ 생성자를 접근제어자와 상관없이 사용할 수 있도록 지원하는 API <br/>
@@ -36,6 +41,27 @@ public class ReflectionTest {
     void controllerScanRefector() {
         Set<Class<?>> beans = getTypesAnnotatedWith(List.of(Controller.class, Service.class));
         logger.debug("beans: [{}]", beans);
+    }
+
+
+    /**
+     * 힙 영역에 로드되어 있는 Class타입의 객체를 가지고 오는 3가지 방법
+     */
+    @Test
+    void load() throws ClassNotFoundException {
+        /* 1 */
+        Class<User> clazz1 = User.class; // 클래스.class
+        /* 2 */
+        Class<? extends User> clazz2 = new User("YooHyeokSchool", "유재혁").getClass();// <instance>.getClass() 메소드 호출
+        /* 3 */
+        Class<?> clazz3 = Class.forName("org.example.model.User"); // forName() 메소드의 매개변수에 클래스들이 존재하는 풀 패키지명을 지정
+
+        logger.debug("clazz: [{}]", clazz1);
+        logger.debug("clazz: [{}]", clazz2);
+        logger.debug("clazz: [{}]", clazz3);
+        assertThat(clazz1 == clazz2).isTrue();
+        assertThat(clazz2 == clazz3).isTrue();
+        assertThat(clazz1 == clazz3).isTrue();
     }
 
     /**
