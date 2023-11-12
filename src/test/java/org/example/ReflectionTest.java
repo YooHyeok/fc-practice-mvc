@@ -65,6 +65,18 @@ public class ReflectionTest {
     }
 
     /**
+     * Class타입 객체 조회 및 선언된 필드, 생성자, 메소드 조회
+     */
+    @Test
+    void showClass() {
+        Class<User> clazz = User.class;
+        logger.debug(clazz.getName());
+        logger.debug("User all declared fields: [{}]", Arrays.stream(clazz.getDeclaredFields()).collect(Collectors.toList())); // 클래스에 선언된 필드들 출력
+        logger.debug("User all declared constructors: [{}]", Arrays.stream(clazz.getDeclaredConstructors()).collect(Collectors.toList())); // 클래스에 선언된 생성자들 출력
+        logger.debug("User all declared methods: [{}]", Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toList())); // 클래스에 선언된 메소드들 출력
+    }
+
+    /**
      *
      * @param annotations
      * Class<? extends Annotaion > : Annotation 타입의 클래스를 담는 리스트를 뜻한다. <br/>
