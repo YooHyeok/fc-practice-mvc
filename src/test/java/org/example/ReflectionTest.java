@@ -1,10 +1,8 @@
 package org.example;
 
-import org.example.annotation.Controller;
-import org.example.annotation.RequestMapping;
-import org.example.annotation.RequestMethod;
-import org.example.annotation.Service;
-import org.example.model.User;
+import org.example.reflection.annotation.Controller;
+import org.example.reflection.annotation.Service;
+import org.example.reflection.model.User;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -54,7 +52,7 @@ public class ReflectionTest {
         /* 2 */
         Class<? extends User> clazz2 = new User("YooHyeokSchool", "유재혁").getClass();// <instance>.getClass() 메소드 호출
         /* 3 */
-        Class<?> clazz3 = Class.forName("org.example.model.User"); // forName() 메소드의 매개변수에 클래스들이 존재하는 풀 패키지명을 지정
+        Class<?> clazz3 = Class.forName("org.example.reflection.model.User"); // forName() 메소드의 매개변수에 클래스들이 존재하는 풀 패키지명을 지정
 
         logger.debug("clazz: [{}]", clazz1);
         logger.debug("clazz: [{}]", clazz2);

@@ -1,10 +1,9 @@
-package org.example.controller;
+package org.example.reflection.controller;
 
-import org.example.annotation.Controller;
-import org.example.annotation.RequestMapping;
-import org.example.annotation.RequestMethod;
+import org.example.reflection.annotation.Controller;
+import org.example.reflection.annotation.RequestMapping;
+import org.example.reflection.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
