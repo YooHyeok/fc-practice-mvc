@@ -2,6 +2,7 @@ package org.example.mvc;
 
 import org.example.mvc.controller.Controller;
 import org.example.mvc.controller.HomeController;
+import org.example.mvc.controller.UserCreateController;
 import org.example.mvc.controller.UserListController;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class RequestMappingHandlerMapping {
     void init() {
         mappings.put("/", new HomeController());
         mappings.put("/users", new UserListController());
+        mappings.put("/users", new UserCreateController());
     }
 
     /**
