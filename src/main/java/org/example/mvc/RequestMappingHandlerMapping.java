@@ -4,7 +4,7 @@ import org.example.mvc.controller.Controller;
 import org.example.mvc.controller.HomeController;
 import org.example.mvc.controller.UserCreateController;
 import org.example.mvc.controller.UserListController;
-import org.example.reflection.annotation.RequestMethod;
+import org.example.mvc.RequestMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,10 @@ public class RequestMappingHandlerMapping {
      * @param urlPath
      * @return
      */
-    public Controller findHandler(String urlPath) {
-        return mappings.get(urlPath);
+    public Controller findHandler(HandlerKey handlerKey) {
+        return mappings.get(handlerKey);
     }
+    /*public Controller findHandler(String urlPath) {
+        return mappings.get(urlPath);
+    }*/
 }

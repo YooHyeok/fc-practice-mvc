@@ -38,7 +38,8 @@ public class DispatcherServlet extends HttpServlet {
         log.info("[DispatcherServlet] service started.");
 
         try {
-            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
+//            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
+            Controller handler = requestMappingHandlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));// 현재 요청 uri 정보를 handler메소드에 위임
             String viewName = handler.handleRequest(request, response);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
             requestDispatcher.forward(request, response);
