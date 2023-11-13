@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,16 +28,17 @@ public class DispatcherServlet extends HttpServlet {
      */
     @Override
     public void init() throws ServletException {
+        log.info("DispatcherServlet#init");
         requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.init();
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("DispatcherServlet#service");
+        log.info("[DispatcherServlet] service started.");
 
-        Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
         try {
+            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
             String viewName = handler.handleRequest(request, response);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
             requestDispatcher.forward(request, response);
