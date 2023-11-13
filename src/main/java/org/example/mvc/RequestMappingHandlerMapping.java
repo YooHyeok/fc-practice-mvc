@@ -4,6 +4,7 @@ import org.example.mvc.controller.Controller;
 import org.example.mvc.controller.HomeController;
 import org.example.mvc.controller.UserCreateController;
 import org.example.mvc.controller.UserListController;
+import org.example.reflection.annotation.RequestMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,15 +18,20 @@ public class RequestMappingHandlerMapping {
      * String : URL PATH
      * Controller: 컨트롤러
      */
-    private Map<String, Controller> mappings = new HashMap<>();
+
+//    private Map<String, Controller> mappings = new HashMap<>();
+    private Map<HandlerKey, Controller> mappings = new HashMap<>();
 
     /**
      * default 매핑주소 / 요청이 들어오면 HomeController 클래스를 매핑시켜준다.
      */
     void init() {
-        mappings.put("/", new HomeController());
-        mappings.put("/users", new UserListController());
-        mappings.put("/users", new UserCreateController());
+//        mappings.put("/", new HomeController());
+//        mappings.put("/users", new UserListController());
+//        mappings.put("/users", new UserCreateController());
+        mappings.put(new HandlerKey(RequestMethod.GET,"/"), new HomeController());
+        mappings.put(new HandlerKey(RequestMethod.GET,"/users"), new UserListController());
+        mappings.put(new HandlerKey(RequestMethod.POST,"/users"), new UserCreateController());
     }
 
     /**
