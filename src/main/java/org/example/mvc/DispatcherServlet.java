@@ -64,7 +64,7 @@ public class DispatcherServlet extends HttpServlet {
              */
             for (ViewResolver viewResolver : viewResolvers) {
                 View view = viewResolver.resolveView(viewName);
-                view.render(new HashMap<>(), request, response);
+                view.render(new HashMap<>(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
             }
         } catch (Exception e) {
             log.error("exception occurred: [{}]", e.getMessage(), e);
