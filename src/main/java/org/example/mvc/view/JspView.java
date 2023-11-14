@@ -13,6 +13,13 @@ public class JspView implements View{
         this.name = name;
     }
 
+    /**
+     * forward를 구현한 render() 메소드
+     * @param model
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @Override
     public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         /**
