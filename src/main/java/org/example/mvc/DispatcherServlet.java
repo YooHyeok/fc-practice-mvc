@@ -1,6 +1,7 @@
 package org.example.mvc;
 
 import org.example.mvc.controller.Controller;
+import org.example.mvc.model.ModelAndView;
 import org.example.mvc.view.JspViewResolver;
 import org.example.mvc.view.View;
 import org.example.mvc.view.ViewResolver;
@@ -60,13 +61,22 @@ public class DispatcherServlet extends HttpServlet {
             String viewName = handler.handleRequest(request, response);
 //            RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
 //            requestDispatcher.forward(request, response);
+
+
+            HandlerAdapter resturnHandlerAdapter = handlerAdapters.stream()
+                    .filter(handlerAdapter -> handlerAdapter.supports(handler))
+                    .findAny()
+                    .orElseThrow(() -> new ServletException("No adapter for handler [" + handler + "]"));
+            ModelAndView modelAndView = resturnHandlerAdapter.handle(request, response, handler);
+
             /**
              * ViewResolver의 resolveView메소드를 통해 뷰 네임을 전달하면 적절한 뷰가 선택될 것이고 (Redirect/Forward)
              * forward 혹은 redirect를 통해 적절한 view를 출력해준다.
              */
             for (ViewResolver viewResolver : viewResolvers) {
                 View view = viewResolver.resolveView(viewName);
-                view.render(new HashMap<>(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
+//                view.render(new HashMap<>(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
+                view.render(modelAndView.getModel(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
             }
         } catch (Exception e) {
             log.error("exception occurred: [{}]", e.getMessage(), e);
