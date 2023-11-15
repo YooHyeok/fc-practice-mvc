@@ -58,7 +58,7 @@ public class DispatcherServlet extends HttpServlet {
         try {
 //            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
             Controller handler = requestMappingHandlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));// 현재 요청 uri 정보를 handler메소드에 위임
-            String viewName = handler.handleRequest(request, response);
+//            String viewName = handler.handleRequest(request, response);
 //            RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
 //            requestDispatcher.forward(request, response);
 
@@ -74,8 +74,9 @@ public class DispatcherServlet extends HttpServlet {
              * forward 혹은 redirect를 통해 적절한 view를 출력해준다.
              */
             for (ViewResolver viewResolver : viewResolvers) {
-                View view = viewResolver.resolveView(viewName);
+//                View view = viewResolver.resolveView(viewName);
 //                view.render(new HashMap<>(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
+                View view = viewResolver.resolveView(modelAndView.getViewName());
                 view.render(modelAndView.getModel(), request, response); // view에 넘길 값을 담을 map객체를 함께 넘긴다.
             }
         } catch (Exception e) {
