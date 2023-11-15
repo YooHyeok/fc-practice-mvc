@@ -21,5 +21,5 @@ public interface HandlerAdapter {
      * @param response
      * @throws Exception
      */
-    ModelAndView handle(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
 }
