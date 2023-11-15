@@ -26,6 +26,7 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
+    private List<HandlerAdapter> handlerAdapters;
     private List<ViewResolver> viewResolvers;
 
     /**
@@ -45,6 +46,7 @@ public class DispatcherServlet extends HttpServlet {
          * Arrays.asList는 리스트의 변경이 가능하므로 메모리를 더 사용하게 된다.
          * 리스트의 요소가 단1개인 불변의 리스트를 생성할 경우에 사용한다.
          */
+        handlerAdapters = List.of(new SimpleControllerHandlerAdapter());
         viewResolvers = Collections.singletonList(new JspViewResolver()); //viewResolver 클래스 싱글톤 리스트로 초기화
     }
 
