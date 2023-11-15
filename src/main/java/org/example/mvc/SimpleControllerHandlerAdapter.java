@@ -1,4 +1,5 @@
 package org.example.mvc;
 
-public class SimpleControllerHandlerAdapter {
+public class SimpleControllerHandlerAdapter implements HandlerAdapter {
+
 }
