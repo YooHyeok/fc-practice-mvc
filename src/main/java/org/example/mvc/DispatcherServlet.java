@@ -26,8 +26,8 @@ public class DispatcherServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
 
-    private RequestMappingHandlerMapping requestMappingHandlerMapping;
     private HandlerMapping handlerMapping;
+    private List<HandlerMapping>  handlerMappings;
     private List<HandlerAdapter> handlerAdapters;
     private List<ViewResolver> viewResolvers;
 
@@ -40,9 +40,11 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         log.info("DispatcherServlet#init");
-        requestMappingHandlerMapping = new RequestMappingHandlerMapping();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = new RequestMappingHandlerMapping();
         requestMappingHandlerMapping.init();
-        handlerMapping = requestMappingHandlerMapping;
+        AnnotationHandlerMapping annotationHandlerMapping = new AnnotationHandlerMapping("org.example");
+//        handlerMapping = requestMappingHandlerMapping;
+        annotationHandlerMapping.initialize();
 
         /**
          * [SingletonList]
@@ -50,7 +52,9 @@ public class DispatcherServlet extends HttpServlet {
          * Arrays.asList는 리스트의 변경이 가능하므로 메모리를 더 사용하게 된다.
          * 리스트의 요소가 단1개인 불변의 리스트를 생성할 경우에 사용한다.
          */
-        handlerAdapters = List.of(new SimpleControllerHandlerAdapter());
+        handlerMappings = List.of(requestMappingHandlerMapping, annotationHandlerMapping);
+        handlerAdapters = List.of(new SimpleControllerHandlerAdapter(), new AnnotationHandlerAdapter());
+//        handlerAdapters = List.of(new SimpleControllerHandlerAdapter());
         viewResolvers = Collections.singletonList(new JspViewResolver()); //viewResolver 클래스 싱글톤 리스트로 초기화
     }
 
@@ -58,13 +62,21 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("[DispatcherServlet] service started.");
 
+        String requestURI = request.getRequestURI();
+        RequestMethod requestMethod = RequestMethod.valueOf(request.getMethod());
         try {
 //            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());// 현재 요청 uri 정보를 handler메소드에 위임
 //            Controller handler = requestMappingHandlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));// 현재 요청 uri 정보를 handler메소드에 위임
-            Object handler = handlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));// 현재 요청 uri 정보를 handler메소드에 위임
 //            String viewName = handler.handleRequest(request, response);
 //            RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
 //            requestDispatcher.forward(request, response);
+//            Object handler = handlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));// 현재 요청 uri 정보를 handler메소드에 위임
+
+            Object handler = handlerMappings.stream()
+                    .filter(hm -> hm.findHandler(new HandlerKey(requestMethod, requestURI)) != null)
+                    .map(hm -> hm.findHandler(new HandlerKey(requestMethod, requestURI)))
+                    .findAny()
+                    .orElseThrow(() -> new ServletException("No handler for [" + requestMethod + ", " + requestURI + "]"));// 현재 요청 uri 정보를 handler메소드에 위임
 
 
             HandlerAdapter resturnHandlerAdapter = handlerAdapters.stream()
